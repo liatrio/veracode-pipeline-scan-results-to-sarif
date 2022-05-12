@@ -410,6 +410,7 @@ class Converter {
         this.msgFunc('Pipeline Scan results file found and parsed - validated JSON file');
         //"scan_status": "SUCCESS"
         if (pipelineScanResult.scan_status !== "SUCCESS") {
+            this.msgFunc('Scan SUCCESS status not found')
             throw Error("Unsuccessful scan status found");
         }
         this.msgFunc('Issues count: ' + pipelineScanResult.findings.length);
@@ -689,6 +690,8 @@ function run(opt, msgFunc) {
             output = converter.convertPipelineScanResults(results);
         }
         catch (_) {
+            msgFunc("Caught exception when trying to convert results");
+            msgFunc("Exception message: " + _.message);
             output = converter.convertSarifLog(results);
         }
     }
